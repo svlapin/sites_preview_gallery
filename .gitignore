@@ -33,3 +33,6 @@ node_modules
 
 ### Bower ###
 bower_components
+
+# images
+public/images/*.png
