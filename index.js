@@ -2,15 +2,24 @@
 
 var childProcess = require('child_process');
 var fs = require('fs');
+var path = require('path');
 
 var express = require('express');
 
 var app = express();
 var appCache = new Cache();
 
-app.get('/preview', function(req, res) {
-  var sent = false;
+function logGetRequest (req, res, next) {
+  if (req.method === 'GET') {
+    console.log('+INF: GET %s', req.url);
+  }
 
+  next();
+}
+
+app.use(logGetRequest);
+
+app.get('/preview', function(req, res) {
   var fileName = appCache.get(req.query.url);
 
   if (fileName) {
@@ -18,17 +27,43 @@ app.get('/preview', function(req, res) {
     return serveFile(fileName);
   }
 
-  fileName = tempFile();
+  createPreview(req.query.url, function(err, fileName) {
+    if (err) {
+      console.log(err.stack);
+      return res.status(500).json({
+        error: 'Phantom error'
+      });
+    }
+
+    serveFile(fileName);
+
+  });
+
+  function serveFile(filePathToSend) {
+    res.json({
+      path: path.relative('./public', filePathToSend)
+    });
+
+    console.log('+INF:', 'file', filePathToSend, ' sent');
+  }
+});
+
+function createPreview(url, cb) {
+  var fileName = tempFile();
+
+  var cbCalled = false;
 
   var imgProcess = childProcess.spawn(
     'phantomjs',
-    ['rasterize.js', req.query.url, fileName, '800px*600px']
+    ['rasterize.js', url, fileName, '800px*600px']
   );
 
   imgProcess.stdout.on('close', function() {
-    if (!sent) {
-      appCache.push(req.query.url, fileName);
-      serveFile(fileName);
+    appCache.push(url, fileName);
+
+    if (!cbCalled) {
+      cbCalled = true;
+      cb(null, fileName);
     }
   });
 
@@ -41,18 +76,13 @@ app.get('/preview', function(req, res) {
 
   function onPhantomError(err) {
     console.log('Phantom error:', err.stack);
-    res.status(500).send('Error while running Phantom');
-    sent = true;
-  }
 
-  function serveFile(filePathToSend) {
-    res.sendFile(filePathToSend, function() {
-      console.log('+INF:', 'file', filePathToSend, 'sent');
-    });
+    if (!cbCalled) {
+      cbCalled = true;
+      cb(err);
+    }
   }
-});
-
-app.get('/app.js');
+}
 
 app.use(express.static('public'));
 
@@ -65,7 +95,8 @@ function onPhantomData(data) {
 }
 
 function tempFile() {
-  return '/tmp/' + 'image_' + Math.floor(Math.random() * 10000) + '.png';
+  return './public/images/' + 'image_' +
+    Math.floor(Math.random() * 10000) + '.png';
 }
 
 function Cache() {

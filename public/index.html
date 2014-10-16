@@ -5,8 +5,17 @@
   <title>Previewer</title>
 </head>
 <body ng-app="previewer" ng-controller="MainController">
-  {{name}}
+  {{newUrl}}
+  <form ng-submit="addNew();">
+    <input type="text" ng-model="newUrl">
+    <input type="submit">
+  </form>
 
+  <div class="preview_container">
+    <div class="preview" ng-repeat="preview in previews">
+    
+    </div>
+  </div>
   <script src="/bower_components/angular/angular.js"></script>
   <script src="/js/app.js"></script>
 </body>
