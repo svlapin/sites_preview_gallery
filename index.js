@@ -52,6 +52,10 @@ app.get('/preview', function(req, res) {
   }
 });
 
+app.get('/app.js');
+
+app.use(express.static('public'));
+
 app.listen(process.NODE_ENV || 3000, function() {
   console.log('+INF:', 'Listening on', process.NODE_ENV || 3000);
 });
