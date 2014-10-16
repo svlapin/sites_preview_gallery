@@ -11,9 +11,10 @@
     <input type="submit">
   </form>
 
+  <div ng-show="error" style="color:red;"><span>{{error}}</div>
   <div class="preview_container">
     <div class="preview" ng-repeat="preview in previews">
-    
+      <img ng-src='/{{preview}}'>
     </div>
   </div>
   <script src="/bower_components/angular/angular.js"></script>
