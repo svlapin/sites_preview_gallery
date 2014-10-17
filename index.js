@@ -7,20 +7,12 @@ var path = require('path');
 var express = require('express');
 
 var app = express();
-var appCache = new Cache();
 
-var logger = require('./modules/logger');
+var logger = require('./lib/logger');
 
 app.use(logger());
 
 app.get('/preview', function(req, res) {
-  var fileName = appCache.get(req.query.url);
-
-  if (fileName) {
-    // found in cache
-    return serveFile(fileName);
-  }
-
   createPreview(req.query.url, function(err, fileName) {
     if (err) {
       console.log(err.stack);
@@ -29,17 +21,12 @@ app.get('/preview', function(req, res) {
       });
     }
 
-    serveFile(fileName);
-
-  });
-
-  function serveFile(filePathToSend) {
     res.json({
-      path: path.relative('./public', filePathToSend)
+      path: path.relative('./public', fileName)
     });
 
-    console.log('+INF:', 'file', filePathToSend, ' sent');
-  }
+    console.log('+INF:', 'file', fileName, ' sent');
+  });
 });
 
 function createPreview(url, cb) {
@@ -53,8 +40,6 @@ function createPreview(url, cb) {
   );
 
   imgProcess.stdout.on('close', function() {
-    appCache.push(url, fileName);
-
     if (!cbCalled) {
       cbCalled = true;
       cb(null, fileName);
@@ -91,26 +76,4 @@ function onPhantomData(data) {
 function tempFile() {
   return './public/images/' + 'image_' +
     Math.floor(Math.random() * 10000) + '.png';
-}
-
-function Cache() {
-  var collection = [];
-
-  function PreviewItem(url, fileName) {
-    this.url = url;
-    this.fileName = fileName;
-    this.createdAt = Date.now();
-  }
-
-  this.push = function(url, fileName) {
-    collection.push(new PreviewItem(url, fileName));
-  };
-
-  this.get = function(url) {
-    for (var i = 0, l = collection.length; i < l; i++) {
-      if (collection[i].url === url) {
-        return collection[i].fileName;
-      }
-    }
-  };
 }
