@@ -9,15 +9,9 @@ var express = require('express');
 var app = express();
 var appCache = new Cache();
 
-function logGetRequest (req, res, next) {
-  if (req.method === 'GET') {
-    console.log('+INF: GET %s', req.url);
-  }
+var logger = require('./modules/logger');
 
-  next();
-}
-
-app.use(logGetRequest);
+app.use(logger());
 
 app.get('/preview', function(req, res) {
   var fileName = appCache.get(req.query.url);
