@@ -8,16 +8,25 @@
 </head>
 <body ng-app="previewer" ng-controller="MainController">
   <div class="container">
-    {{newUrl}}
-    <form ng-submit="addNew();">
-      <input type="text" ng-model="newUrl">
-      <input type="submit">
-    </form>
+    <h1>Sites preview gallery</h1>
+    <div class="row">
+      <form role="form" class="col-md-4" ng-submit="addNew();">
+        <div class="form-group">
+          <label>
+            URL
+            <input class="form-control" type="text" ng-model="newUrl">
+          </label>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-primary" type="submit">
+        </div>
+      </form>
+    </div>
 
     <div ng-show="error" style="color:red;"><span>{{error}}</span></div>
     <div class="preview_container">
       <div class="preview" ng-repeat="preview in previews">
-        <img ng-src='/{{preview}}'>
+        <img class="img-thumbnail" ng-src='/{{preview}}'>
       </div>
     </div>
   </div>
