@@ -9,6 +9,7 @@
   "author": "Sergey Lapin",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.9.7"
+    "express": "^4.9.7",
+    "express-session": "^1.9.1"
   }
 }
