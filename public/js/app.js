@@ -8,8 +8,10 @@
     $scope.addNew = function() {
       $http.get('/preview?url=' + encodeURI($scope.newUrl))
         .success(function(data) {
-          $scope.previews.push(data.path);
-          console.log($scope.previews);
+          $scope.previews.push({
+            path: data.path,
+            url: data.url
+          });
         })
         .error(function(data) {
           $scope.error = data.error;

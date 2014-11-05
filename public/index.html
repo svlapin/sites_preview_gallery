@@ -24,9 +24,12 @@
     </div>
 
     <div ng-show="error" style="color:red;"><span>{{error}}</span></div>
-    <div class="preview_container">
-      <div class="preview" ng-repeat="preview in previews">
-        <img class="img-thumbnail" ng-src='/{{preview}}'>
+    <div class="preview_container clearfix">
+      <div class="thumb-container" ng-repeat="preview in previews">
+        <div class="thumb-header">
+          <p class="text-uppercase text-center bg-info">{{preview.url}}</p>
+        </div>
+        <img class="img-thumbnail" ng-src='/{{preview.path}}'>
       </div>
     </div>
   </div>
