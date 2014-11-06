@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
-<body ng-app="previewer" ng-controller="MainController">
+<body ng-app="previewer" ng-controller="MainController" ng-init="pending=false;">
   <div class="container">
     <h1>Sites preview gallery</h1>
     <div class="row">
@@ -18,7 +18,7 @@
           </label>
         </div>
         <div class="form-group">
-          <input class="btn btn-primary" type="submit">
+          <input class="btn btn-primary" type="submit" ng-disabled="pending">
         </div>
       </form>
     </div>
