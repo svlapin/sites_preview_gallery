@@ -5,19 +5,23 @@
 
   app.controller('MainController', ['$scope', '$http', function($scope, $http) {
     $scope.previews = [];
+    $scope.status = {};
     $scope.addNew = function() {
-      $scope.pending = true;
+      $scope.status = {
+        pending: true
+      };
       $http.get('/preview?url=' + encodeURI($scope.newUrl))
         .success(function(data) {
-          $scope.pending = false;
           $scope.previews.push({
             path: data.path,
             url: data.url
           });
+          $scope.status = {};
         })
         .error(function(data) {
-          $scope.pending = false;
-          $scope.error = data.error;
+          $scope.status = {
+            error: data.error
+          };
         });
     };
   }]);

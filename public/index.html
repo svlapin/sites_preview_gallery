@@ -6,7 +6,8 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
-<body ng-app="previewer" ng-controller="MainController" ng-init="pending=false;">
+<body ng-app="previewer" ng-controller="MainController"
+      ng-init="status={pending: false, error: null}">
   <div class="container">
     <h1>Sites preview gallery</h1>
     <div class="row">
@@ -23,7 +24,14 @@
       </form>
     </div>
 
-    <div ng-show="error" style="color:red;"><span>{{error}}</span></div>
+    <div>
+      <p ng-show="status.error">
+        <span class="bg-danger" >Error: {{status.error}}</span>
+      </p>
+      <p ng-show="status.pending">
+        <span class="bg-warning">Pending request...</span>
+      </p>
+    </div>
     <div class="preview_container clearfix">
       <div class="thumb-container" ng-repeat="preview in previews">
         <div class="thumb-header">
