@@ -11,5 +11,10 @@
   "dependencies": {
     "express": "^4.9.7",
     "express-session": "^1.9.1"
+  },
+  "devDependencies": {
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-jasmine": "^0.2.3"
   }
 }
