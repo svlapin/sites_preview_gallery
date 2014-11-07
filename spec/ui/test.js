@@ -22,4 +22,23 @@ describe('MainController', function() {
   it('scope addNew should be a function', inject(function($controller) {
     expect(typeof scope.addNew).toEqual('function');
   }));
+
+  it('should create a preview item', inject(function(_$httpBackend_) {
+    var $httpBackend = _$httpBackend_;
+
+    var testUrl = 'http://google.com';
+    $httpBackend.expectGET('/preview?url=' + encodeURI(testUrl))
+        .respond({
+          path: '/some_test.jpg',
+          url: testUrl
+        });
+    scope.newUrl = testUrl;
+    scope.addNew();
+
+    $httpBackend.flush();
+
+    expect(scope.previews.length).toEqual(1);
+    expect(scope.previews[0].path).toEqual('/some_test.jpg');
+    expect(scope.previews[0].url).toEqual(testUrl);
+  }));
 });
