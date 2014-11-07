@@ -1,12 +1,16 @@
 'use strict';
 
 describe('MainController', function() {
+  var scope, ctrl;
+
   beforeEach(module('previewer'));
 
-  it('should be defined', inject(function($controller) {
-    var scope = {};
-    var ctrl = $controller('MainController', {$scope: scope});
+  beforeEach(inject(function($controller) {
+    scope = {};
+    ctrl = $controller('MainController', {$scope: scope});
+  }));
 
+  it('should be defined', inject(function($controller) {
     expect(scope.status).toBeDefined();
   }));
 });
