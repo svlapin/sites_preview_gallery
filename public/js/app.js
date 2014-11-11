@@ -29,6 +29,9 @@
   app.directive('previews', function() {
     return {
       restrict: 'E',
+      scope: {
+        previews: '=data'
+      },
       templateUrl: 'previews.html'
     };
   });
