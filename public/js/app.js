@@ -28,6 +28,7 @@
 
   app.directive('previews', function() {
     return {
+      restrict: 'E',
       templateUrl: 'previews.html'
     };
   });
