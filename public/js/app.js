@@ -25,4 +25,10 @@
         });
     };
   }]);
+
+  app.directive('previews', function() {
+    return {
+      templateUrl: 'previews.html'
+    };
+  });
 })();
