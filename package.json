@@ -2,9 +2,9 @@
   "name": "previewer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/karma start --single-run --browsers Chrome"
   },
   "author": "Sergey Lapin",
   "license": "MIT",
